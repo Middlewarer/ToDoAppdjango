@@ -18,6 +18,11 @@
     {% else %}
     <p>You are not logged in: <a href='{% url 'base:login' %}'>login</a></p>
     {% endif %}
+
+    <form method='get'>
+    <input type='text' name='search-area' value='{{search-input}}'>
+    <input type='submit' value='Search'>
+    </form>
     
     <hr>
     <a href='{% url 'base:task_create' %}'>Create a new task</a>
