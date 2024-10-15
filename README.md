@@ -1,7 +1,8 @@
 # To-Do List Application
 
 ## Description
-A simple To-Do List application that allows users to create, update, delete, and mark tasks as completed. Great for managing daily tasks effectively.
+A simple To-Do List application that allows users to create, update, delete,
+and mark tasks as completed. Great for managing daily tasks effectively.
 
 ## Getting Started
 
@@ -17,8 +18,8 @@ git clone https://github.com/yourusername/todo-list-app.git
 cd todo-list-app
 
 <b><h2>Create and activate a virtual environment:</h2></b>
-python -m venv venv
-source venv/bin/activate  # On macOS/Linux
+python -m venv venv </br>
+source venv/bin/activate  # On macOS/Linux </br>
 venv\Scripts\activate  # On Windows
 
 <b><h2>Install the required packages:</h2></b>
