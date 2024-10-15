@@ -1,37 +1,83 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>This is the list view</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-    {% if request.user.is_authenticated %}
-    <p>{{request.user}} ---- <a href={% url 'base:logout' %}>LogOut</a></p>
-    {% else %}
-    <p>You are not logged in: <a href='{% url 'base:login' %}'>login</a></p>
-    {% endif %}
+{% extends "base/base.html" %}
 
-    <form method='get'>
-    <input type='text' name='search-area' value='{{search-input}}'>
-    <input type='submit' value='Search'>
-    </form>
-    
-    <hr>
+{% block content %}
+<!-- Кнопка для создания новой задачи -->
+<button class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
     <a href='{% url 'base:task_create' %}'>Create a new task</a>
-    {% for task in tasks %}
-        View the details of: <a href="{% url 'base:task_detail' task.pk %}">{{task.title}}</a>
-        </br>
-    {% empty %}
-    The list is empty
-    {% endfor %}    
-        <script src="" async defer></script>
-    </body>
-</html>
+</button>
+
+<!-- Проверка на наличие невыполненных задач -->
+{% if not stasks %}
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">You have no tasks</h1>
+            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">You can always create one once you're ready!</p>
+        </div>
+    </div>
+</section>
+{% else %}
+<!-- Секция с невыполненными задачами -->
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Here is your tasks list</h1>
+            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Seems like you've got work to do today!</p>
+        </div>
+
+        <div class="flex flex-wrap -m-4">
+            {% for task in stasks %}
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-200 p-6 rounded-lg">
+                    <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">
+                        <a href='{% url 'base:task_detail' task.pk %}'>{{ task.title|truncatechars:15 }}</a>
+                    </h2>
+                    <p class="leading-relaxed text-base">{{ task.description|truncatechars:30 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<hr/>
+
+<!-- Секция с выполненными задачами -->
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Here is your completed tasks list</h1>
+            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Well done!</p>
+        </div>
+
+        <div class="flex flex-wrap -m-4">
+            {% for task in ntasks %}
+            <div class="xl:w-1/3 md:w-1/2 p-4">
+                <div class="border border-gray-200 p-6 rounded-lg">
+                    <div class="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-6 h-6" viewBox="0 0 24 24">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg text-gray-900 font-medium title-font mb-2">
+                        <a href='{% url 'base:task_detail' task.pk %}'>{{ task.title|truncatechars:15 }}</a>
+                    </h2>
+                    <p class="leading-relaxed text-base">{{ task.description|truncatechars:30 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+{% block title %}
+List of Tasks
+{% endblock title %}
