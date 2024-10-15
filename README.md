@@ -7,33 +7,53 @@ and mark tasks as completed. Great for managing daily tasks effectively.
 ## Getting Started
 
 ### Prerequisites
-- Python 3.8 or higher
-- Django 3.2 or higher
+
+- Python `3.8^`
+- Django `3.2^`
 
 ### Installation
 
-1. Clone the repository:
-bash
+1. Clone the repository
+
+```shell
 git clone https://github.com/yourusername/todo-list-app.git
 cd todo-list-app
+```
 
-<b><h2>Create and activate a virtual environment:</h2></b>
-python -m venv venv </br>
-source venv/bin/activate  # On macOS/Linux </br>
-venv\Scripts\activate  # On Windows
+2. Create and activate a virtual environment
 
-<b><h2>Install the required packages:</h2></b>
+```shell
+python -m venv venv
+source venv/bin/activate
+```
+
+3. Install the required packages
+
+```shell
 pip install -r requirements.txt
+```
 
-<b><h2>Run migrations:</h2></b>
+4. Run migrations
+
+```shell
 python manage.py migrate
+```
 
-<b><h2>Create a superuser:</h2></b>
+5. Create a superuser, and add in the details as prompted
+
+```shell
 python manage.py createsuperuser
+```
 
-<b><h2>Start the development server:</h2></b>
+6. Start the development server
+
+```shell
 python manage.py runserver
-Access the application:
+```
 
-Open your web browser and go to http://127.0.0.1:8000 to view the app.
-Access the admin panel at http://127.0.0.1:8000/admin using your superuser credentials.
+7. Access the application by opening your web browser and go to http://127.0.0.1:8000 to view the app.
+8. Access the admin panel at http://127.0.0.1:8000/admin using your superuser credentials.
+
+## Preview
+
+[coming soon]
