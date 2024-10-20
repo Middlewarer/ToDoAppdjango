@@ -22,7 +22,8 @@
     <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
             <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Here is your tasks list</h1>
-            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Seems like you've got work to do today!</p>
+            <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Seems like you've got work to do today! You have {{count}} tasks to complete.</p>
+
         </div>
 
         <div class="flex flex-wrap -m-4">
@@ -47,7 +48,6 @@
 {% endif %}
 <!--  Секция с добавлением задачи -->
 
-<hr/>
 {% load form_tags %}
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto">

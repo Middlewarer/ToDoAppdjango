@@ -71,7 +71,8 @@ class TaskList(LoginRequiredMixin, FormSetView):
         user_tasks = Task.objects.filter(user=self.request.user)
         context['stasks'] = user_tasks.filter(complete=False)  # Невыполненные задачи
         context['ntasks'] = user_tasks.filter(complete=True)   # Выполненные задачи
-        context['formset'] = self.get_formset()  # Создание пустого formset
+        context['formset'] = self.get_formset() 
+        context['count'] = context['stasks'].count() # Создание пустого formset
         return context
 
     def formset_valid(self, formset):  # Получаем данные формы из POST
