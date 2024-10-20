@@ -23,6 +23,18 @@ $ source env/bin/activate
 ```sh
 (env)$ pip install -r requirements.txt
 ```
+
+<h4>Make and Apply the migrations</h4>
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+<h4>Configure the default keys in settings.py or in .env created file.<h4>
+
+<hr/>
+
 Note the `(env)` in front of the prompt. This indicates that this terminal
 session operates in a virtual environment set up by `virtualenv2`.
 
