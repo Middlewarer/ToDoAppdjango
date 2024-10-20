@@ -8,6 +8,9 @@ from django.urls import reverse_lazy
 from .models import Task
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from extra_views import FormSetView, ModelFormSetView
+from .forms import TaskFormSet, TaskForm
+
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -32,6 +35,12 @@ def complete_task(request, pk):
     print(f"Task after update: {task.complete}")  # Проверка обновления
     return redirect('base:task_list')
 
+def uncomplete_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.complete = False
+    task.save()
+    return redirect('base:task_list')
+
 
 class RegisterPage(FormView):
     template_name = 'base/register.html'
@@ -49,28 +58,34 @@ class RegisterPage(FormView):
             return redirect('base:task_list')  # Redirect if user is already logged in
         return super().get(*args, **kwargs)
 
-class TaskList(LoginRequiredMixin, ListView):
-    model = Task
+class TaskList(LoginRequiredMixin, FormSetView):
+    form_class = TaskForm
     template_name = 'base/index.html'
-    context_object_name = 'tasks'
+    extra = 1  # Одна дополнительная форма для создания задачи
+
+    def get_queryset(self):
+        return Task.objects.none()  # Пустой QuerySet для создания новых задач
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Фильтруем только задачи, которые принадлежат текущему пользователю и не выполнены
-        context['stasks'] = context['tasks'].filter(user=self.request.user, complete=False)
-        context['ntasks'] = context['tasks'].filter(user=self.request.user, complete=True)
-        context['count'] = context['tasks'].count()
-
-        # Поиск по заголовку задачи
-        search_input = self.request.GET.get('search-area') or ''
-        if search_input:
-            context['tasks'] = context['tasks'].filter(title__icontains=search_input)
-        
-        context['search_input'] = search_input
-
+        user_tasks = Task.objects.filter(user=self.request.user)
+        context['stasks'] = user_tasks.filter(complete=False)  # Невыполненные задачи
+        context['ntasks'] = user_tasks.filter(complete=True)   # Выполненные задачи
+        context['formset'] = self.get_formset()  # Создание пустого formset
         return context
 
-    
+    def formset_valid(self, formset):  # Получаем данные формы из POST
+
+        if formset.is_valid():  # Проверяем, валидны ли формы
+            for form in formset:
+                if form.is_valid():  # Дополнительная проверка на валидность формы
+                    task = form.save(commit=False)
+                    task.user = self.request.user  # Присваиваем текущего пользователя
+                    task.save()  # Сохраняем задачу
+            return super().formset_valid(formset)  # Обработка успешной валидации
+
+        return self.formset_invalid(formset)
+
 
 
 
@@ -80,22 +95,6 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
 
 
-class TaskCreate(LoginRequiredMixin, CreateView):
-    model = Task
-    fields = '__all__'
-    success_url = reverse_lazy('base:task_list')
-    
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.completed = False
-        form.save()
-        return super().form_valid(form)
-    
-    def form_invalid(self, form):
-        print('not saving the form')
-        print(form.errors)
-        return super(TaskCreate, self).form_invalid(form)
-    
     
     
 

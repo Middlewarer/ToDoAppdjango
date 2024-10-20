@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -32,7 +33,7 @@
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     {% if request.user.is_authenticated %}
 
-    <a class="mr-5 hover:text-gray-900" href="{% url 'base:task_create' %}">Create a task</a>
+    <a class="mr-5 hover:text-gray-900" href="{% url 'base:task_list' %}">List of the tasks</a>
     <a class="mr-5 hover:text-gray-900" href="{% url 'base:logout' %}">Logout</a>
     
     {% else %}
