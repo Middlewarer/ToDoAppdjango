@@ -104,6 +104,15 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('base:task_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return super().get_context_data(**kwargs)
+    
+
+    
+
+
 
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
