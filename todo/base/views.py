@@ -70,7 +70,7 @@ class TaskList(LoginRequiredMixin, FormSetView):
         context = super().get_context_data(**kwargs)
         user_tasks = Task.objects.filter(user=self.request.user)
         context['stasks'] = user_tasks.filter(complete=False)  # Невыполненные задачи
-        context['ntasks'] = user_tasks.filter(complete=True)   # Выполненные задачи
+        context['ntasks'] = user_tasks.filter(complete=True).order_by("-updated_at")   # Выполненные задачи
         context['formset'] = self.get_formset() 
         context['count'] = context['stasks'].count() # Создание пустого formset
         return context

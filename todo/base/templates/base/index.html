@@ -18,12 +18,12 @@
 {{formset.management_form}}
 
 <!-- Секция с невыполненными задачами -->
+<!-- Секция с невыполненными задачами -->
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-wrap w-full mb-20 flex-col items-center text-center">
             <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Here is your tasks list</h1>
             <p class="lg:w-1/2 w-full leading-relaxed text-gray-500">Seems like you've got work to do today! You have {{count}} tasks to complete.</p>
-
         </div>
 
         <div class="flex flex-wrap -m-4">
@@ -39,13 +39,26 @@
                         <a href='{% url 'base:task_detail' form.pk %}'>{{ form.title|truncatechars:15 }}</a>
                     </h2>
                     <p class="leading-relaxed text-base">{{ form.description|truncatechars:30 }}</p>
+                    
+                    <!-- Кнопки для обновления, удаления и завершения -->
+                    <div class="flex space-x-2 mt-4">
+                        <a href='{% url "base:task_update" form.pk %}' class="text-white bg-blue-500 border-0 py-1 px-4 focus:outline-none hover:bg-blue-600 rounded text-sm">Обновить</a>
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-sm"><a href={% url 'base:task_delete' form.pk %}>Удалить</a></button>
+                        </form>
+                        <form action='{% url "base:complete_task" form.pk %}' method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded text-sm">Завершить</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
-{% endif %}
+{%endif%}
 <!--  Секция с добавлением задачи -->
 
 {% load form_tags %}
